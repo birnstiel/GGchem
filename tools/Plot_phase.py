@@ -3,6 +3,7 @@ import matplotlib.patches as patches
 import numpy as np
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter, ScalarFormatter, LogLocator
 from matplotlib.backends.backend_pdf import PdfPages
+np.float = np.float64
 plt.rcParams['axes.linewidth'] = 1.5
 
 single_figures = 0
@@ -73,12 +74,12 @@ for i in range(0,30):
   al = allist[i]
   ex = exlist[i]
   titel = titels[i]
-  print titel+" ..."
+  print(titel+" ...")
   fig,ax = plt.subplots(figsize=(7,6))
   nmax = np.float(-100)
   splist = []
   dat2 = np.zeros([len(dat[:,0]),len(dat[0,:])])
-  for sp in range(3,4+NELEM+NMOLE)+range(4+NELEM+NMOLE+NDUST,4+NELEM+NMOLE+2*NDUST):
+  for sp in list(range(3,4+NELEM+NMOLE)) + list(range(4+NELEM+NMOLE+NDUST,4+NELEM+NMOLE+2*NDUST)):
     spname = keyword[sp]
     ind = str.find(spname,el)
     if (ind < 0): 
@@ -105,7 +106,7 @@ for i in range(0,30):
           if (j1>=0 and j1<ind and ind<j2):
             text2=spname[j2+1:j2+2]
             stoich=stoich*float(text2)
-          print el,spname,stoich
+          print(el,spname,stoich)
           lstoich = np.log10(stoich)
           dat2[:,sp] = dat[:,sp] + lstoich
           ymax = np.max(dat2[:,sp])
@@ -113,7 +114,7 @@ for i in range(0,30):
           if (ymax>-100): splist.append(sp)   
   if (nmax==-100): continue
   splist = np.array(splist)
-  print keyword[splist]
+  print(keyword[splist])
   implist = []
   Nc = 0
   ii = 0
@@ -143,13 +144,13 @@ for i in range(0,30):
       #print ix,iy,Tg[ii],logp[ii],keyword[splist[spmax]],cc
       ii = ii+1
   implist = np.array(keyword[splist[implist]])
-  print implist
+  print(implist)
 
   plt.title(titel,fontsize=20)
   plt.xlabel(r'$T\ \mathrm{[K]}$',fontsize=22)
   plt.ylabel(r'$\mathrm{log}_{10}\ p\ \mathrm{[bar]}$',fontsize=22)
   plt.xlim(Tmin,Tmax)
-  plt.ylim(pmax,pmin)
+  plt.ylim(pmin,pmax)
   if (Tmax/Tmin>10):
     plt.xscale('log')
   else:  
@@ -172,6 +173,6 @@ for i in range(0,30):
   plt.clf()
 
 if (single_figures==0): pp.close()
-if (single_figures==0): print '... written output to ggchem.pdf.'
+if (single_figures==0): print('... written output to ggchem.pdf.')
 
 
